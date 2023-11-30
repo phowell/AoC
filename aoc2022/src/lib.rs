@@ -1,14 +1,11 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+use aoc_runner_derive::aoc_lib;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub mod day01;
+pub mod day02;
+pub mod day03;
+pub mod day04;
+pub mod day05;
+pub mod day06;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+
+aoc_lib! { year = 2022 }
