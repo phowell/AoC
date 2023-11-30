@@ -1,8 +1,8 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 use std::collections::HashSet;
 
-pub fn score(ch: char) -> i32{
-    if ch.is_lowercase(){
+pub fn score(ch: char) -> i32 {
+    if ch.is_lowercase() {
         (ch as i32) - 96
     } else {
         (ch as i32) - 38
@@ -19,8 +19,8 @@ pub fn part1(input: &Vec<Vec<char>>) -> i32 {
     let mut sum = 0;
     for line in input {
         let (comp1, comp2) = line.split_at(line.len() / 2);
-        let hs1: HashSet<char> = comp1.into_iter().copied().collect();
-        let hs2: HashSet<char> = comp2.into_iter().copied().collect();
+        let hs1: HashSet<char> = comp1.iter().copied().collect();
+        let hs2: HashSet<char> = comp2.iter().copied().collect();
         let intersec: Vec<&char> = hs1.intersection(&hs2).collect();
         sum += score(*intersec[0]);
     }
@@ -28,19 +28,18 @@ pub fn part1(input: &Vec<Vec<char>>) -> i32 {
 }
 
 #[aoc(day3, part2)]
-pub fn part2(input: &Vec<Vec<char>>) -> i32 {
-    use itertools::Itertools;
+pub fn part2(input: &[Vec<char>]) -> i32 {
     use intersection::hash_set;
+    use itertools::Itertools;
     let mut sum = 0;
-    for (elf1, elf2, elf3) in input.into_iter().tuples(){
-        let elf1: HashSet<char> = elf1.into_iter().copied().collect();
-        let elf2: HashSet<char> = elf2.into_iter().copied().collect();
-        let elf3: HashSet<char> = elf3.into_iter().copied().collect();
-        
+    for (elf1, elf2, elf3) in input.iter().tuples() {
+        let elf1: HashSet<char> = elf1.iter().copied().collect();
+        let elf2: HashSet<char> = elf2.iter().copied().collect();
+        let elf3: HashSet<char> = elf3.iter().copied().collect();
+
         let common = hash_set::intersection([elf1, elf2, elf3]);
 
         sum += score(common.into_iter().collect::<Vec<char>>()[0]);
-
     }
     sum
 }
@@ -51,7 +50,7 @@ mod tests {
 
     use super::*;
 
-    static EXAMPLE: &'static str = indoc! {"
+    static EXAMPLE: &str = indoc! {"
         vJrwpWtwJgWrhcsFMMfFFhFp
         jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
         PmmdzqPrVvPwwTWBwg

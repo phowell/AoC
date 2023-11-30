@@ -97,7 +97,7 @@ mod tests {
 
     use super::*;
 
-    static EXAMPLE: &'static str = indoc! {"
+    static EXAMPLE: &str = indoc! {"
         A Y
         B X
         C Z

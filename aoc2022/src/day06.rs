@@ -11,9 +11,9 @@ pub fn part1(input: &[char]) -> i32 {
     let mut i = 4;
     let mut found = false;
     while !found {
-        let slice = &input[(i-4)..i];
+        let slice = &input[(i - 4)..i];
         let mut hs: HashSet<char> = HashSet::new();
-        for &s in slice.iter(){
+        for &s in slice.iter() {
             hs.insert(s);
         }
         if hs.len() == 4 {
@@ -31,9 +31,9 @@ pub fn part2(input: &[char]) -> i32 {
     let mut i = 14;
     let mut found = false;
     while !found {
-        let slice = &input[(i-14)..i];
+        let slice = &input[(i - 14)..i];
         let mut hs: HashSet<char> = HashSet::new();
-        for &s in slice.iter(){
+        for &s in slice.iter() {
             hs.insert(s);
         }
         if hs.len() == 14 {
@@ -50,11 +50,11 @@ mod tests {
 
     use super::*;
 
-    static EX1: &'static str = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
-    static EX2: &'static str = "bvwbjplbgvbhsrlpgdmjqwftvncz";
-    static EX3: &'static str = "nppdvjthqldpwncqszvftbrmjlhg";
-    static EX4: &'static str = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg";
-    static EX5: &'static str = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
+    static EX1: &str = "mjqjpqmgbljsphdztnvjfqwrcgsmlb";
+    static EX2: &str = "bvwbjplbgvbhsrlpgdmjqwftvncz";
+    static EX3: &str = "nppdvjthqldpwncqszvftbrmjlhg";
+    static EX4: &str = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg";
+    static EX5: &str = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw";
 
     #[test]
     fn ex1_part1() {

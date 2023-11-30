@@ -22,12 +22,12 @@ pub fn input_generator(input: &str) -> Vec<Elf> {
 }
 
 #[aoc(day1, part1)]
-pub fn part1(input: &Vec<Elf>) -> i32 {
+pub fn part1(input: &[Elf]) -> i32 {
     input.iter().map(|v| v.total_cals()).max().unwrap()
 }
 
 #[aoc(day1, part2)]
-pub fn part2(input: &Vec<Elf>) -> i32 {
+pub fn part2(input: &[Elf]) -> i32 {
     use itertools::Itertools;
     input
         .iter()
@@ -46,7 +46,7 @@ mod tests {
 
     use super::*;
 
-    static EXAMPLE: &'static str = indoc! {"
+    static EXAMPLE: &str = indoc! {"
         1000
         2000
         3000

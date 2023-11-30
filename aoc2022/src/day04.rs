@@ -10,8 +10,11 @@ pub fn input_generator(input: &str) -> Vec<Vec<(i32, i32)>> {
 }
 
 pub fn vals(v: &str) -> (i32, i32) {
-    let nums = v.split_once("-").unwrap();
-    (nums.0.parse::<i32>().unwrap(), nums.1.parse::<i32>().unwrap())
+    let nums = v.split_once('-').unwrap();
+    (
+        nums.0.parse::<i32>().unwrap(),
+        nums.1.parse::<i32>().unwrap(),
+    )
 }
 
 // Returns true if either input is a subset of the other
@@ -20,17 +23,16 @@ pub fn contained(x: (i32, i32), y: (i32, i32)) -> bool {
 }
 
 pub fn overlap(x: (i32, i32), y: (i32, i32)) -> bool {
-    
-    (y.0 >= x.0 && y.0 <= x.1) ||
-    (y.1 >= x.0 && y.1 <= x.1) ||
-    (x.0 >= y.0 && x.0 <= y.1) ||
-    (x.1 >= y.0 && x.1 <= y.1) 
+    (y.0 >= x.0 && y.0 <= x.1)
+        || (y.1 >= x.0 && y.1 <= x.1)
+        || (x.0 >= y.0 && x.0 <= y.1)
+        || (x.1 >= y.0 && x.1 <= y.1)
 }
 
 #[aoc(day4, part1)]
 pub fn part1(input: &Vec<Vec<(i32, i32)>>) -> i32 {
     let mut sum = 0;
-    for line in input{
+    for line in input {
         if contained(line[0], line[1]) {
             sum += 1;
         }
@@ -41,7 +43,7 @@ pub fn part1(input: &Vec<Vec<(i32, i32)>>) -> i32 {
 #[aoc(day4, part2)]
 pub fn part2(input: &Vec<Vec<(i32, i32)>>) -> i32 {
     let mut sum = 0;
-    for line in input{
+    for line in input {
         if overlap(line[0], line[1]) {
             sum += 1;
         }
@@ -55,7 +57,7 @@ mod tests {
 
     use super::*;
 
-    static EXAMPLE: &'static str = indoc! {"
+    static EXAMPLE: &str = indoc! {"
         2-4,6-8
         2-3,4-5
         5-7,7-9
