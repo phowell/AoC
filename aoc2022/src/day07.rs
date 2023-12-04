@@ -1,57 +1,64 @@
 use aoc_runner_derive::{aoc, aoc_generator};
-use std::collections::HashMap;
+use std::{cell::RefCell, rc::Rc};
 
 #[aoc_generator(day7)]
 pub fn input_generator(input: &str) -> Vec<String> {
     input.lines().map(|v| v.to_string()).collect()
 }
-
-pub struct FileSystem {
-    root: Folder,
-    cwd: Vec<String>,
-}
-
-impl<'a> FileSystem {
-    pub fn new() -> FileSystem{
-        FileSystem{root: Folder::new(), cwd: vec!["/".to_string()]}
-    }
-
-    pub fn cd(&mut self, path: &str) {
-        match path {
-            ".." => _ = self.cwd.pop(),
-            "/" => self.cwd = vec!["/".to_string()],
-            _ => self.cwd.push(path.to_string()) 
-        }
-    }
-    pub fn traverse_path<'p>(&mut self, path: &'p [String]) -> (&mut Folder, &'p [String]) {
-        self.root.traverse_path(path)
-    }
-}
+type FolderRef = Rc<RefCell<Folder>>;
 
 pub struct Folder {
+    name: String,
     files: Vec<(i32, String)>,
-    folders: HashMap<String, Folder>,
+    folders: Vec<FolderRef>,
 }
 
 impl Folder {
-    pub fn new() -> Folder {
-        Folder {files: Vec::<(i32, String)>::new(), folders: HashMap::new()}
+    pub fn new(name: String) -> Folder {
+        Folder {
+            name,
+            files: Vec::<(i32, String)>::new(),
+            folders: Vec::<FolderRef>::new(),
+        }
     }
 
+    pub fn add_file(mut self, size: i32, name: String) {
+        self.files.push((size, name));
+    }
 
-    pub fn traverse_path<'p>(&mut self, mut path: &'p [String]) -> (&mut Folder, &'p [String]){
-        if self.folders.contains_key(&path[0]){
-            self.folders[path[0]].traverse_path(path[1..])
-        } else {
-            (self, path)
-        }
+    pub fn add_folder(mut self, name: String) {
+        self.folders.push(Rc::new(RefCell::new(Folder::new(name))));
+    }
+
+    pub fn get_folder(self, name: String) -> Option<FolderRef> {
+        self.folders.into_iter().find(|f| f.borrow().name == name)
     }
 }
 
 #[aoc(day7, part1)]
 pub fn part1(input: &Vec<String>) -> i32 {
-    let fs: FileSystem = FileSystem::new();
-    1
+    let mut path = Vec::<String>::new();
+    let root: FolderRef = Rc::new(RefCell::new(Folder::new('/'.to_string())));
+    path.push(root.borrow().name.clone());
+    for line in input {
+        if line.starts_with("$ cd") {
+            if line.ends_with('/') {
+                path = Vec::<String>::new();
+                path.push(root.borrow().name.clone());
+            }
+            if line.ends_with("..") {
+                let _ = path.pop();
+            } else {
+                let mut pointer = Rc::clone(&root);
+                for p in &path {
+                    pointer = pointer.borrow().get_folder(p.to_string()).unwrap();
+                }
+            }
+        } else if line.starts_with("dir") {
+            todo!();
+        }
+    }
+    0
 }
 
 //#[aoc(day7, part2)]
@@ -65,7 +72,7 @@ mod tests {
 
     use super::*;
 
-    static EXAMPLE: &'static str = indoc! {"
+    static EXAMPLE: &str = indoc! {"
         $ cd /
         $ ls
         dir a

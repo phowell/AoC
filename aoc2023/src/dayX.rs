@@ -6,12 +6,12 @@ pub fn input_generator(input: &str) -> Vec<&str> {
 }
 
 #[aoc(dayX, part1)]
-pub fn part1(input: &Vec<&str>) -> i32 {
+pub fn part1(input: &Vec<&str>) -> u32 {
     todo!();
 }
 
 #[aoc(dayX, part2)]
-pub fn part2(input: &Vec<&str>) -> i32 {
+pub fn part2(input: &Vec<&str>) -> u32 {
     todo!();
 }
 
@@ -21,7 +21,7 @@ mod tests {
 
     use super::*;
 
-    static EXAMPLE: &'static str = indoc! {"
+    static EXAMPLE: &str = indoc! {"
         A Y
         B X
         C Z
