@@ -1,3 +1,6 @@
+use itertools::Itertools;
+use std::collections::HashSet;
+
 use aoc_runner_derive::{aoc, aoc_generator};
 
 #[aoc_generator(day03)]
@@ -27,12 +30,39 @@ impl Schematic {
         parts
     }
 
-    fn values(&self, pivot: (usize, usize)) -> Vec<u32> {
+    fn values(&self, pivot: (usize, usize)) -> Vec<usize> {
         //let mut digits = Vec::new();
         let (x, y) = pivot;
-        let neighbours = self.neighbours(x, y).into_iter();
+        let n = self.neighbours(x, y);
+        n.iter()
+            .map(|i| self.first_digit(i.0, i.1))
+            .unique()
+            .map(|j| self.int_from_ptr(j.0, j.1))
+            .collect()
     }
-    fn dedup(&self, neighbours: &[(usize, usize)]) {}
+
+    fn first_digit(&self, x: usize, y: usize) -> (usize, usize) {
+        let mut p = y;
+        let mut f = false;
+        while !f {
+            if p == 0 || !self.dia[x][p - 1].is_numeric() {
+                f = true;
+            } else {
+                p -= 1;
+            }
+        }
+        (x, p)
+    }
+    fn int_from_ptr(&self, x: usize, y: usize) -> usize {
+        let mut digits = Vec::<char>::new();
+        let mut ptr = y;
+        while self.dia[x][ptr].is_numeric() {
+            digits.push(self.dia[x][ptr]);
+            ptr += 1;
+        }
+        let numstr: String = digits.into_iter().collect();
+        numstr.parse::<usize>().unwrap()
+    }
 
     fn neighbours(&self, x: usize, y: usize) -> Vec<(usize, usize)> {
         if (x, y) == (0, 0) {
@@ -97,9 +127,6 @@ impl Schematic {
 #[aoc(day03, part1)]
 pub fn part1(input: &Schematic) -> u32 {
     let parts = input.parts();
-    let mut numbers = Vec::<u32>::new();
-    println!("{:?}", parts);
-    0
 }
 
 #[aoc(day03, part2)]
