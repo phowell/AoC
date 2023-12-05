@@ -1,5 +1,4 @@
 use itertools::Itertools;
-use std::collections::HashSet;
 
 use aoc_runner_derive::{aoc, aoc_generator};
 
@@ -30,11 +29,19 @@ impl Schematic {
         parts
     }
 
+    fn gears(&self) -> Vec<(usize, usize)> {
+        let parts = self.parts();
+        parts
+            .into_iter()
+            .filter(|x| self.dia[x.0][x.1] == '*')
+            .collect()
+    }
+
     fn values(&self, pivot: (usize, usize)) -> Vec<usize> {
-        //let mut digits = Vec::new();
         let (x, y) = pivot;
         let n = self.neighbours(x, y);
         n.iter()
+            .filter(|p| self.dia[p.0][p.1].is_numeric())
             .map(|i| self.first_digit(i.0, i.1))
             .unique()
             .map(|j| self.int_from_ptr(j.0, j.1))
@@ -56,7 +63,8 @@ impl Schematic {
     fn int_from_ptr(&self, x: usize, y: usize) -> usize {
         let mut digits = Vec::<char>::new();
         let mut ptr = y;
-        while self.dia[x][ptr].is_numeric() {
+
+        while ptr <= self.max_y && self.dia[x][ptr].is_numeric() {
             digits.push(self.dia[x][ptr]);
             ptr += 1;
         }
@@ -125,13 +133,25 @@ impl Schematic {
 }
 
 #[aoc(day03, part1)]
-pub fn part1(input: &Schematic) -> u32 {
+pub fn part1(input: &Schematic) -> usize {
     let parts = input.parts();
+    let mut sum: usize = 0;
+    for p in parts {
+        sum += input.values(p).iter().sum::<usize>();
+    }
+    sum
 }
 
 #[aoc(day03, part2)]
-pub fn part2(input: &Schematic) -> u32 {
-    todo!();
+pub fn part2(input: &Schematic) -> usize {
+    let gears = input.gears();
+    let mut sum: usize = 0;
+    for g in gears {
+        if input.values(g).len() == 2 {
+            sum += input.values(g).iter().product::<usize>()
+        }
+    }
+    sum
 }
 
 #[cfg(test)]
@@ -155,11 +175,11 @@ mod tests {
 
     #[test]
     fn example_part1() {
-        assert_eq!(part1(&input_generator(EXAMPLE)), 15);
+        assert_eq!(part1(&input_generator(EXAMPLE)), 4361);
     }
 
     #[test]
     fn example_part2() {
-        assert_eq!(part2(&input_generator(EXAMPLE)), 12);
+        assert_eq!(part2(&input_generator(EXAMPLE)), 467835);
     }
 }
