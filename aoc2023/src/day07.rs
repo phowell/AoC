@@ -1,6 +1,6 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 
-#[aoc_generator(day06)]
+#[aoc_generator(day07)]
 pub fn input_generator(input: &str) -> Vec<&str> {
     let lines = input.lines().collect();
     let times = lines[0].split_whitespace();
@@ -12,12 +12,12 @@ struct Race {
     distance: u32,
 }
 
-#[aoc(day06, part1)]
+#[aoc(day07, part1)]
 pub fn part1(input: &Vec<&str>) -> u32 {
     todo!();
 }
 
-#[aoc(day06, part2)]
+#[aoc(day07, part2)]
 pub fn part2(input: &Vec<&str>) -> u32 {
     todo!();
 }

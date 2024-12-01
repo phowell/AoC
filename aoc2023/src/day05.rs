@@ -127,7 +127,6 @@ impl PlantingMapper {
 
 #[aoc(day05, part1)]
 pub fn part1(input: &Alminac) -> u64 {
-    //*input.run().iter().min().unwrap()
     input.run(false)
 }
 

@@ -1,9 +1,10 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 
 #[aoc_generator(day06)]
-pub fn input_generator(input: &str) -> Vec<&str> {
-    let lines = input.lines().collect();
-    let times = lines[0].split_whitespace();
+pub fn input_generator(input: &str) -> Vec<Race> {
+    let lines = input.lines().collect::<Vec<_>>();
+    let times = lines[0].split_whitespace().collect()[1..];
+    let distances = lines[1].split_whitespace().collect[1..];
 }
 
 #[derive(Debug)]
